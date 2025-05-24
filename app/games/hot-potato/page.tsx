@@ -8,7 +8,7 @@ import { ShockEffect } from "@/components/shock-effect"
 import { Button } from "@/components/ui/button"
 
 export default function HotPotatoGame() {
-  const [bombHolder, setBombHolder] = useState<1 | 2>(Math.random() < 0.5 ? 1 : 2)
+  const [bombHolder, setBombHolder] = useState<1 | 2 | null>(null)
   const [timeLeft, setTimeLeft] = useState(0)
   const [maxTime, setMaxTime] = useState(15)
   const [gameActive, setGameActive] = useState(false)
@@ -122,20 +122,39 @@ export default function HotPotatoGame() {
 
   const endGame = () => {
     setGameActive(false)
-
+    alert(bombHolder)
     if (bombHolder === 1) {
       setPlayer2Score(player2Score + 1)
       setTimeout(() => {
         setLoser("Spieler 1")
+        try {
+          fetch("http://192.168.166.203:5000/player2", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
         setShowShock(true)
       }, 1500)
-    } else {
+    } else if (bombHolder === 2) {
       setPlayer1Score(player1Score + 1)
       setTimeout(() => {
         setLoser("Spieler 2")
+        try {
+          fetch("http://192.168.166.203:5000/player1", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
         setShowShock(true)
       }, 1500)
-    }
+    } else {
+  console.error("Ungültiger bombHolder:", bombHolder)
+  return
+}
   }
 
   const resetGame = () => {
@@ -181,7 +200,7 @@ export default function HotPotatoGame() {
               <div className="text-3xl font-bold">{countdown}</div>
             ) : gameActive ? (
               <div className="text-xl font-bold">
-                Gib die Bombe weiter! <span className="text-red-500">{Math.ceil(timeLeft)}</span>
+                Gib die Bombe weiter! <span className="text-red-500">{/* {Math.ceil(timeLeft)} */}</span>
               </div>
             ) : exploded ? (
               <div className="text-2xl font-bold text-red-500">BOOM! Spieler {bombHolder} verliert!</div>
@@ -193,14 +212,12 @@ export default function HotPotatoGame() {
           <div className="flex justify-center mb-8">
             <div
               id="bomb"
-              className={`relative w-32 h-32 rounded-full bg-zinc-700 flex items-center justify-center transition-all ${
-                exploded ? "bg-red-600 bomb-explode" : ""
-              }`}
+              className={`relative w-32 h-32 rounded-full bg-zinc-700 flex items-center justify-center transition-all ${exploded ? "bg-red-600 bomb-explode" : ""
+                }`}
             >
               <Bomb
-                className={`h-16 w-16 ${bombHolder === 1 ? "text-blue-400" : "text-green-400"} ${
-                  exploded ? "text-yellow-300 bomb-shake" : ""
-                }`}
+                className={`h-16 w-16 ${bombHolder === 1 ? "text-blue-400" : "text-green-400"} ${exploded ? "text-yellow-300 bomb-shake" : ""
+                  }`}
               />
               {gameActive && !exploded && (
                 <div className="absolute inset-0 rounded-full border-4 border-red-500 animate-pulse"></div>
@@ -212,9 +229,8 @@ export default function HotPotatoGame() {
             <div className="flex flex-col items-center">
               <div className="text-lg mb-2">Spieler 1 (Q-Taste)</div>
               <div
-                className={`w-full h-16 rounded-lg flex items-center justify-center text-xl font-bold ${
-                  bombHolder === 1 ? "bg-blue-900 border-2 border-blue-400" : "bg-zinc-700"
-                }`}
+                className={`w-full h-16 rounded-lg flex items-center justify-center text-xl font-bold ${bombHolder === 1 ? "bg-blue-900 border-2 border-blue-400" : "bg-zinc-700"
+                  }`}
               >
                 {bombHolder === 1 ? "HAT DIE BOMBE!" : ""}
               </div>
@@ -223,9 +239,8 @@ export default function HotPotatoGame() {
             <div className="flex flex-col items-center">
               <div className="text-lg mb-2">Spieler 2 (P-Taste)</div>
               <div
-                className={`w-full h-16 rounded-lg flex items-center justify-center text-xl font-bold ${
-                  bombHolder === 2 ? "bg-green-900 border-2 border-green-400" : "bg-zinc-700"
-                }`}
+                className={`w-full h-16 rounded-lg flex items-center justify-center text-xl font-bold ${bombHolder === 2 ? "bg-green-900 border-2 border-green-400" : "bg-zinc-700"
+                  }`}
               >
                 {bombHolder === 2 ? "HAT DIE BOMBE!" : ""}
               </div>

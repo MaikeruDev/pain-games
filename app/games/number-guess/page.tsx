@@ -93,11 +93,27 @@ export default function NumberGuess() {
       result = "Spieler 1 gewinnt diese Runde!"
       setPlayer1Score(player1Score + 1)
       setLoser("Spieler 2")
+      try {
+          fetch("http://192.168.166.203:5000/player2", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
       setShowShock(true)
     } else {
       result = "Spieler 2 gewinnt diese Runde!"
       setPlayer2Score(player2Score + 1)
       setLoser("Spieler 1")
+      try {
+          fetch("http://192.168.166.203:5000/player1", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
       setShowShock(true)
     }
 

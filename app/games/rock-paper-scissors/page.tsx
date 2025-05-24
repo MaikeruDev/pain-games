@@ -92,6 +92,14 @@ export default function RockPaperScissors() {
       setTimeout(() => {
         setLoser("Spieler 2")
         setShowShock(true)
+        try {
+          fetch("http://192.168.166.203:5000/player2", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
       }, 1500)
     } else {
       setWinner("player2")
@@ -102,6 +110,14 @@ export default function RockPaperScissors() {
       setTimeout(() => {
         setLoser("Spieler 1")
         setShowShock(true)
+        try {
+          fetch("http://192.168.166.203:5000/player1", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
       }, 1500)
     }
 

@@ -20,7 +20,7 @@ export default function Home() {
           <GameCard
             title="Pong"
             description="Der Klassiker. Verpasse den Ball und spüre den Schmerz!"
-            href="/games/pong"
+            href="/games/pong.html"
           />
           <GameCard
             title="Schere Stein Papier"

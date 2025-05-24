@@ -57,10 +57,26 @@ export default function TicTacToe() {
       if (gameWinner === "X") {
         setXWins(xWins + 1)
         setLoser("Spieler O")
+        try {
+          fetch("http://192.168.166.203:5000/player2", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
         setShowShock(true)
       } else if (gameWinner === "O") {
         setOWins(oWins + 1)
         setLoser("Spieler X")
+        try {
+          fetch("http://192.168.166.203:5000/player1", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
         setShowShock(true)
       }
     } else {
@@ -99,10 +115,10 @@ export default function TicTacToe() {
         <div className="bg-zinc-800 p-6 rounded-lg border-2 border-yellow-500/30">
           <div className="flex justify-between mb-6">
             <div className="text-xl">
-              Spieler X: <span className="font-bold">{xWins}</span>
+              Spieler X (1): <span className="font-bold">{xWins}</span>
             </div>
             <div className="text-xl">
-              Spieler O: <span className="font-bold">{oWins}</span>
+              Spieler O (2): <span className="font-bold">{oWins}</span>
             </div>
           </div>
 

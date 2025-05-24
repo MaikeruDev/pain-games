@@ -47,12 +47,28 @@ export default function RacingGame() {
       setPlayer1Score(player1Score + 1)
       setGameActive(false)
       setLoser("Spieler 2")
+      try {
+          fetch("http://192.168.166.203:5000/player2", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
       setShowShock(true)
     } else if (player2Position >= FINISH_LINE && gameActive) {
       setWinner(2)
       setPlayer2Score(player2Score + 1)
       setGameActive(false)
       setLoser("Spieler 1")
+      try {
+          fetch("http://192.168.166.203:5000/player1", {
+            method: "POST",
+          })
+          console.log("Error API called")
+        } catch (error) {
+          console.error("Failed to call error API:", error)
+        }
       setShowShock(true)
     }
   }, [player1Position, player2Position, gameActive])
